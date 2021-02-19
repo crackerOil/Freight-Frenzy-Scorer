@@ -16,7 +16,7 @@ class _AutonomusScoreState extends State<AutonomusScore> {
         child: Column(
       children: [
         Text(
-          'End Game',
+          'Autonomus',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 20,

@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
 class Autonomus {
   int wobblesDelivered;
   int powershotsKnocked;
@@ -44,9 +43,14 @@ class EndGame {
 }
 
 class FinalScores with ChangeNotifier {
-  Autonomus _autoScore = Autonomus(highGoal: 0, lowGoal: 0, midGoal: 0, parkedRobots: 0, powershotsKnocked: 0, wobblesDelivered: 0);
-  Teleop _teleopScore = Teleop(highGoal: 0, midGoal: 0, lowGoal: 0);
-  EndGame _endgameScore = EndGame(powershotsKnocked: 0, ringsOnWobble: 0, wobblesDropped: 0, wobblesReturned: 0);
+  Autonomus _autoScore ;
+  Teleop _teleopScore ;
+  EndGame _endgameScore;
+  FinalScores({Autonomus autonomus, Teleop teleop, EndGame endGame}) {
+    _autoScore = autonomus ?? Autonomus(highGoal: 0, lowGoal: 0, midGoal: 0, parkedRobots: 0, powershotsKnocked: 0, wobblesDelivered: 0);
+    _teleopScore = teleop ?? Teleop(highGoal: 0, midGoal: 0, lowGoal: 0);
+    _endgameScore = endGame ?? EndGame(powershotsKnocked: 0, ringsOnWobble: 0, wobblesDropped: 0, wobblesReturned: 0);
+  }
   Autonomus get autoDetails => _autoScore;
   Teleop get teleopDetails => _teleopScore;
   EndGame get endgameDetails => _endgameScore;

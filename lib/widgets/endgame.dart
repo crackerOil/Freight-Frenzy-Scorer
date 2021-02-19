@@ -47,7 +47,7 @@ class _EndGameCardState extends State<EndGameCard> {
             SizedBox(width: 13),
             Text('Wobble Goals in Drop Zone: '),
             Container(
-              width: 0.45* MediaQuery.of(context).size.width,
+              width: 0.35* MediaQuery.of(context).size.width,
               child: Slider(
                 activeColor: Colors.red,
                 value: 1.0 * scores.endgameDetails.wobblesDropped,
@@ -69,18 +69,21 @@ class _EndGameCardState extends State<EndGameCard> {
           children: [
             SizedBox(width: 13),
             Text('Power Shots Knocked: '),
-            Slider(
-              activeColor: Colors.red,
-              value: 1.0 * scores.endgameDetails.powershotsKnocked,
-              onChanged: (val) {
-                setState(() {
-                  scores.updateEndgame(powershotsKnocked: val.round());
-                });
-              },
-              min: 0.0,
-              max: 3.0,
-              divisions: 3,
-              label: scores.endgameDetails.powershotsKnocked.toString(),
+            Container(
+              width: 0.35* MediaQuery.of(context).size.width,
+              child: Slider(
+                activeColor: Colors.red,
+                value: 1.0 * scores.endgameDetails.powershotsKnocked,
+                onChanged: (val) {
+                  setState(() {
+                    scores.updateEndgame(powershotsKnocked: val.round());
+                  });
+                },
+                min: 0.0,
+                max: 3.0,
+                divisions: 3,
+                label: scores.endgameDetails.powershotsKnocked.toString(),
+              ),
             ),
             Text(scores.endgameDetails.powershotsKnocked.toString())
           ],
