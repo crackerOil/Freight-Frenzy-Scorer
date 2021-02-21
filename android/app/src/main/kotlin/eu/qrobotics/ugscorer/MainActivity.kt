@@ -1,4 +1,4 @@
-package com.example.ugscorer
+package eu.qrobotics.ugscorer
 
 import io.flutter.embedding.android.FlutterActivity
 
