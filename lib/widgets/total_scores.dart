@@ -16,7 +16,7 @@ class Scoreboard extends StatelessWidget {
             Column(
               children: <Widget>[
                 Text(
-                  'Autonomus',
+                  'Autonomous',
                   style: TextStyle(
                     color: Colors.green,
                     fontSize: 20,

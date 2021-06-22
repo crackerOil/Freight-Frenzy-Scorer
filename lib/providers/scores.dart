@@ -1,18 +1,21 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-class Autonomus {
+class Autonomous {
   int wobblesDelivered;
   int powershotsKnocked;
   int lowGoal;
   int midGoal;
   int highGoal;
-  int parkedRobots;
+  bool parkedRobot1;
+  bool parkedRobot2;
+  bool traditional;
 
-  Autonomus({
+  Autonomous({
     @required this.highGoal,
     @required this.lowGoal,
     @required this.midGoal,
-    @required this.parkedRobots,
+    @required this.parkedRobot1,
+    @required this.parkedRobot2,
     @required this.powershotsKnocked,
     @required this.wobblesDelivered,
   });
@@ -43,20 +46,21 @@ class EndGame {
 }
 
 class FinalScores with ChangeNotifier {
-  Autonomus _autoScore ;
+  Autonomous _autoScore ;
   Teleop _teleopScore ;
   EndGame _endgameScore;
-  FinalScores({Autonomus autonomus, Teleop teleop, EndGame endGame}) {
-    _autoScore = autonomus ?? Autonomus(highGoal: 0, lowGoal: 0, midGoal: 0, parkedRobots: 0, powershotsKnocked: 0, wobblesDelivered: 0);
+  FinalScores({Autonomous autonomous, Teleop teleop, EndGame endGame}) {
+    _autoScore = autonomous ?? Autonomous(highGoal: 0, lowGoal: 0, midGoal: 0, parkedRobot1: false, parkedRobot2: false, powershotsKnocked: 0, wobblesDelivered: 0);
     _teleopScore = teleop ?? Teleop(highGoal: 0, midGoal: 0, lowGoal: 0);
     _endgameScore = endGame ?? EndGame(powershotsKnocked: 0, ringsOnWobble: 0, wobblesDropped: 0, wobblesReturned: 0);
   }
-  Autonomus get autoDetails => _autoScore;
+  Autonomous get autoDetails => _autoScore;
   Teleop get teleopDetails => _teleopScore;
   EndGame get endgameDetails => _endgameScore;
   int get autoScore {
     return 15 * _autoScore.wobblesDelivered +
-        5 * _autoScore.parkedRobots +
+        5 * (_autoScore.parkedRobot1 ? 1 : 0) +
+        5 * (_autoScore.parkedRobot2 ? 1 : 0) +
         3 * _autoScore.lowGoal +
         6 * _autoScore.midGoal +
         12 * _autoScore.highGoal +
@@ -77,7 +81,7 @@ class FinalScores with ChangeNotifier {
 
   int get totalScore => autoScore + teleopScore + endgameScore;
 
-  void updateAutonomus({int wobblesDelivered =-1, int powershotsKnocked=-1, int lowGoal=-1, int midGoal=-1, int highGoal=-1, int parkedRobots=-1}) {
+  void updateAutonomous({int wobblesDelivered =-1, int powershotsKnocked=-1, int lowGoal=-1, int midGoal=-1, int highGoal=-1, bool parkedRobot1, bool parkedRobot2}) {
     if(wobblesDelivered !=-1 && wobblesDelivered <= 2)
       _autoScore.wobblesDelivered = wobblesDelivered;
     if(powershotsKnocked !=-1 && powershotsKnocked <=3)
@@ -88,8 +92,10 @@ class FinalScores with ChangeNotifier {
       _autoScore.midGoal = midGoal;
     if(highGoal !=-1)
       _autoScore.highGoal = highGoal;
-    if(parkedRobots !=-1 && parkedRobots <=1)
-      _autoScore.parkedRobots = parkedRobots;
+    if(parkedRobot1 != null)
+      _autoScore.parkedRobot1 = parkedRobot1;
+    if(parkedRobot2 != null)
+      _autoScore.parkedRobot2 = parkedRobot2;
     notifyListeners();
   }
 
@@ -114,8 +120,9 @@ class FinalScores with ChangeNotifier {
       _endgameScore.ringsOnWobble = ringsOnWobble;
     notifyListeners();
   }
+
   void resetScore () {
-    _autoScore = Autonomus(highGoal: 0, lowGoal: 0, midGoal: 0, parkedRobots: 0, powershotsKnocked: 0, wobblesDelivered: 0);
+    _autoScore = Autonomous(highGoal: 0, lowGoal: 0, midGoal: 0, parkedRobot1: false, parkedRobot2: false, powershotsKnocked: 0, wobblesDelivered: 0);
     _teleopScore = Teleop(highGoal: 0, midGoal: 0, lowGoal: 0);
     _endgameScore = EndGame(powershotsKnocked: 0, ringsOnWobble: 0, wobblesDropped: 0, wobblesReturned: 0);
     notifyListeners();

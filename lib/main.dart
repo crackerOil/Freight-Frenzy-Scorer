@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ugscorer/screens/scorer_screen.dart';
 import './providers/scores.dart';
+import './providers/game_type.dart';
 void main() {
   runApp(MyApp());
 }
@@ -14,7 +15,10 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (_) => FinalScores(),
-        )
+        ),
+        ChangeNotifierProvider(
+          create: (_) => GameType(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

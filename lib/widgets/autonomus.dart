@@ -1,21 +1,72 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/scores.dart';
+import '../providers/game_type.dart';
 
-class AutonomusScore extends StatefulWidget {
+class AutonomousScore extends StatefulWidget {
   @override
-  _AutonomusScoreState createState() => _AutonomusScoreState();
+  _AutonomousScoreState createState() => _AutonomousScoreState();
 }
 
-class _AutonomusScoreState extends State<AutonomusScore> {
+class _AutonomousScoreState extends State<AutonomousScore> {
   @override
   Widget build(BuildContext context) {
     final scores = Provider.of<FinalScores>(context);
+    final gameType = Provider.of<GameType>(context);
+    final navigationList = <Widget>[
+      SizedBox(width: 13),
+      Text('Navigation: '),
+      Spacer(),
+      Container(
+          padding: EdgeInsets.only(right: 12),
+          child: FlatButton(
+            onPressed: () {
+              setState(() {
+                if (!scores.autoDetails.parkedRobot1)
+                  scores.updateAutonomous(parkedRobot1: true);
+                else
+                  scores.updateAutonomous(parkedRobot1: false);
+              });
+              },
+            child: Text('Parked'),
+            color: scores.autoDetails.parkedRobot1
+                ? Colors.green
+                : Colors.grey,
+          )
+      ),
+    ];
+
+    if (gameType.traditional) {
+      navigationList.add(
+          Container(
+              padding: EdgeInsets.only(right: 12),
+              child: FlatButton(
+                onPressed: () {
+                  setState(() {
+                    if (!scores.autoDetails.parkedRobot2)
+                      scores.updateAutonomous(parkedRobot2: true);
+                    else
+                      scores.updateAutonomous(parkedRobot2: false);
+                  });
+                  },
+                child: Text('Parked'),
+                color: scores.autoDetails.parkedRobot2
+                    ? Colors.green
+                    : Colors.grey,
+              )
+          )
+      );
+    } else {
+      WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {
+        scores.updateAutonomous(parkedRobot2: false);
+      }));
+    }
+
     return Card(
         child: Column(
       children: [
         Text(
-          'Autonomus',
+          'Autonomous',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 20,
@@ -23,27 +74,7 @@ class _AutonomusScoreState extends State<AutonomusScore> {
           ),
         ),
         Row(
-          children: [
-            SizedBox(width: 13),
-            Text('Navigation: '),
-            Spacer(),
-            Container(
-                padding: EdgeInsets.only(right: 12),
-                child: FlatButton(
-                  onPressed: () {
-                    setState(() {
-                      if (scores.autoDetails.parkedRobots == 0)
-                        scores.updateAutonomus(parkedRobots: 1);
-                      else
-                        scores.updateAutonomus(parkedRobots: 0);
-                    });
-                  },
-                  child: Text('Parked'),
-                  color: scores.autoDetails.parkedRobots == 1
-                      ? Colors.green
-                      : Colors.grey,
-                ))
-          ],
+          children: navigationList,
         ),
         Row(
           children: [
@@ -58,7 +89,7 @@ class _AutonomusScoreState extends State<AutonomusScore> {
                   value: 1.0 * scores.autoDetails.wobblesDelivered,
                   onChanged: (val) {
                     setState(() {
-                      scores.updateAutonomus(wobblesDelivered: val.round());
+                      scores.updateAutonomous(wobblesDelivered: val.round());
                     });
                   },
                   min: 0.0,
@@ -81,7 +112,7 @@ class _AutonomusScoreState extends State<AutonomusScore> {
                 value: 1.0 * scores.autoDetails.powershotsKnocked,
                 onChanged: (val) {
                   setState(() {
-                    scores.updateAutonomus(powershotsKnocked: val.round());
+                    scores.updateAutonomous(powershotsKnocked: val.round());
                   });
                 },
                 min: 0.0,
@@ -105,7 +136,7 @@ class _AutonomusScoreState extends State<AutonomusScore> {
                 onPressed: () {
                   setState(
                     () {
-                      scores.updateAutonomus(
+                      scores.updateAutonomous(
                           lowGoal: scores.autoDetails.lowGoal - 1);
                     },
                   );
@@ -115,7 +146,7 @@ class _AutonomusScoreState extends State<AutonomusScore> {
                 icon: Icon(Icons.add, color: Colors.green),
                 onPressed: () {
                   setState(() {
-                    scores.updateAutonomus(
+                    scores.updateAutonomous(
                         lowGoal: scores.autoDetails.lowGoal + 1);
                   });
                 }),
@@ -130,7 +161,7 @@ class _AutonomusScoreState extends State<AutonomusScore> {
                 icon: Icon(Icons.remove, color: Colors.green),
                 onPressed: () {
                   setState(() {
-                    scores.updateAutonomus(
+                    scores.updateAutonomous(
                         midGoal: scores.autoDetails.midGoal - 1);
                   });
                 }),
@@ -139,7 +170,7 @@ class _AutonomusScoreState extends State<AutonomusScore> {
                 icon: Icon(Icons.add, color: Colors.green),
                 onPressed: () {
                   setState(() {
-                    scores.updateAutonomus(
+                    scores.updateAutonomous(
                         midGoal: scores.autoDetails.midGoal + 1);
                   });
                 }),
@@ -154,7 +185,7 @@ class _AutonomusScoreState extends State<AutonomusScore> {
                 icon: Icon(Icons.remove, color: Colors.green),
                 onPressed: () {
                   setState(() {
-                    scores.updateAutonomus(
+                    scores.updateAutonomous(
                         highGoal: scores.autoDetails.highGoal - 1);
                   });
                 }),
@@ -163,7 +194,7 @@ class _AutonomusScoreState extends State<AutonomusScore> {
                 icon: Icon(Icons.add, color: Colors.green),
                 onPressed: () {
                   setState(() {
-                    scores.updateAutonomus(
+                    scores.updateAutonomous(
                         highGoal: scores.autoDetails.highGoal + 1);
                   });
                 }),
