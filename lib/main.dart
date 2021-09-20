@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:ugscorer/screens/scorer_screen.dart';
+import './screens/scorer_screen.dart';
 import './providers/scores.dart';
-import './providers/game_type.dart';
+
 void main() {
-  runApp(MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown
+  ]).then((_) {
+    runApp(MyApp());
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -15,9 +23,6 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (_) => FinalScores(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => GameType(),
         ),
       ],
       child: MaterialApp(
@@ -43,7 +48,7 @@ class MyApp extends StatelessWidget {
         // darkTheme: ThemeData.dark(),
         home: ScorerScreen(),
         routes: {
-          ScorerScreen.routeName: (ctx) => ScorerScreen()
+          "/scorer_screen": (context) => ScorerScreen()
         },
       ),
     );

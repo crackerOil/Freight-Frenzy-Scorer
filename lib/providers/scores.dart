@@ -1,130 +1,262 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
+enum Parking {
+  NOT_PARKED,
+  IN,
+  COMPLETELY_IN
+}
+
 class Autonomous {
-  int wobblesDelivered;
-  int powershotsKnocked;
-  int lowGoal;
-  int midGoal;
-  int highGoal;
-  bool parkedRobot1;
-  bool parkedRobot2;
-  bool traditional;
+  bool duckDelivered;
+  Parking storageUnitParking1;
+  Parking storageUnitParking2;
+  Parking warehouseParking1;
+  Parking warehouseParking2;
+  int storageUnitFreight;
+  int shippingHubFreight;
+  bool duckBonus1;
+  bool duckBonus2;
+  bool shippingElementBonus1;
+  bool shippingElementBonus2;
 
   Autonomous({
-    @required this.highGoal,
-    @required this.lowGoal,
-    @required this.midGoal,
-    @required this.parkedRobot1,
-    @required this.parkedRobot2,
-    @required this.powershotsKnocked,
-    @required this.wobblesDelivered,
+    required this.duckDelivered,
+    required this.storageUnitParking1,
+    required this.storageUnitParking2,
+    required this.warehouseParking1,
+    required this.warehouseParking2,
+    required this.storageUnitFreight,
+    required this.shippingHubFreight,
+    required this.duckBonus1,
+    required this.duckBonus2,
+    required this.shippingElementBonus1,
+    required this.shippingElementBonus2,
   });
 }
 
 class Teleop {
-  int lowGoal;
-  int midGoal;
-  int highGoal;
+  int storageUnitFreight;
+  int level1Freight;
+  int level2Freight;
+  int level3Freight;
+  int sharedFreight;
 
   Teleop({
-    @required this.highGoal,
-    @required this.midGoal,
-    @required this.lowGoal,
+    required this.storageUnitFreight,
+    required this.level1Freight,
+    required this.level2Freight,
+    required this.level3Freight,
+    required this.sharedFreight,
   });
 }
 
 class EndGame {
-  int wobblesReturned;
-  int wobblesDropped;
-  int powershotsKnocked;
-  int ringsOnWobble;
+  int ducksDelivered;
+  bool shippingHubBalanced;
+  bool sharedHubUnbalanced;
+  Parking warehouseParking1;
+  Parking warehouseParking2;
+  bool capping1;
+  bool capping2;
 
-  EndGame({@required this.powershotsKnocked,
-    @required this.ringsOnWobble,
-    @required this.wobblesDropped,
-    @required this.wobblesReturned});
+  EndGame({
+    required this.ducksDelivered,
+    required this.shippingHubBalanced,
+    required this.sharedHubUnbalanced,
+    required this.warehouseParking1,
+    required this.warehouseParking2,
+    required this.capping1,
+    required this.capping2
+  });
 }
 
 class FinalScores with ChangeNotifier {
-  Autonomous _autoScore ;
-  Teleop _teleopScore ;
-  EndGame _endgameScore;
-  FinalScores({Autonomous autonomous, Teleop teleop, EndGame endGame}) {
-    _autoScore = autonomous ?? Autonomous(highGoal: 0, lowGoal: 0, midGoal: 0, parkedRobot1: false, parkedRobot2: false, powershotsKnocked: 0, wobblesDelivered: 0);
-    _teleopScore = teleop ?? Teleop(highGoal: 0, midGoal: 0, lowGoal: 0);
-    _endgameScore = endGame ?? EndGame(powershotsKnocked: 0, ringsOnWobble: 0, wobblesDropped: 0, wobblesReturned: 0);
+  late Autonomous _autoScore;
+  late Teleop _teleopScore;
+  late EndGame _endgameScore;
+
+  FinalScores() {
+    _autoScore = Autonomous(
+        duckDelivered: false,
+        storageUnitParking1: Parking.NOT_PARKED,
+        storageUnitParking2: Parking.NOT_PARKED,
+        warehouseParking1: Parking.NOT_PARKED,
+        warehouseParking2: Parking.NOT_PARKED,
+        storageUnitFreight: 0,
+        shippingHubFreight: 0,
+        duckBonus1: false,
+        duckBonus2: false,
+        shippingElementBonus1: false,
+        shippingElementBonus2: false
+    );
+    _teleopScore = Teleop(
+        storageUnitFreight: 0,
+        level1Freight: 0,
+        level2Freight: 0,
+        level3Freight: 0,
+        sharedFreight: 0
+    );
+    _endgameScore = EndGame(
+        ducksDelivered: 0,
+        shippingHubBalanced: false,
+        sharedHubUnbalanced: false,
+        warehouseParking1: Parking.NOT_PARKED,
+        warehouseParking2: Parking.NOT_PARKED,
+        capping1: false,
+        capping2: false
+    );
   }
+
   Autonomous get autoDetails => _autoScore;
   Teleop get teleopDetails => _teleopScore;
   EndGame get endgameDetails => _endgameScore;
+
   int get autoScore {
-    return 15 * _autoScore.wobblesDelivered +
-        5 * (_autoScore.parkedRobot1 ? 1 : 0) +
-        5 * (_autoScore.parkedRobot2 ? 1 : 0) +
-        3 * _autoScore.lowGoal +
-        6 * _autoScore.midGoal +
-        12 * _autoScore.highGoal +
-        15 * _autoScore.powershotsKnocked;
+    return (_autoScore.duckDelivered ? 10 : 0)
+        + (_autoScore.storageUnitParking1.index * 3)
+        + (_autoScore.storageUnitParking2.index * 3)
+        + (_autoScore.warehouseParking1.index * 5)
+        + (_autoScore.warehouseParking2.index * 5)
+        + (_autoScore.storageUnitFreight * 2)
+        + (_autoScore.shippingHubFreight * 6)
+        + (_autoScore.duckBonus1 ? 10 : 0)
+        + (_autoScore.duckBonus2 ? 10 : 0)
+        + (_autoScore.shippingElementBonus1 ? 20 : 0)
+        + (_autoScore.shippingElementBonus2 ? 20 : 0);
   }
 
   int get teleopScore {
-    return 2 * _teleopScore.lowGoal +
-        4 * _teleopScore.midGoal +
-        6 * _teleopScore.highGoal;
+    return (_teleopScore.storageUnitFreight)
+        + (_teleopScore.level1Freight * 2)
+        + (_teleopScore.level2Freight * 4)
+        + (_teleopScore.level3Freight * 6)
+        + (_teleopScore.sharedFreight * 4);
   }
 
   int get endgameScore {
-    return 5 * _endgameScore.wobblesReturned +
-        20 * _endgameScore.wobblesDropped +
-        15 * _endgameScore.powershotsKnocked + 5 * _endgameScore.ringsOnWobble;
+    return (_endgameScore.ducksDelivered * 6)
+        + (_endgameScore.shippingHubBalanced ? 10 : 0)
+        + (_endgameScore.sharedHubUnbalanced ? 20 : 0)
+        + (_endgameScore.warehouseParking1.index * 3)
+        + (_endgameScore.warehouseParking2.index * 3)
+        + (_endgameScore.capping1 ? 15 : 0)
+        + (_endgameScore.capping2 ? 15 : 0);
   }
 
   int get totalScore => autoScore + teleopScore + endgameScore;
 
-  void updateAutonomous({int wobblesDelivered =-1, int powershotsKnocked=-1, int lowGoal=-1, int midGoal=-1, int highGoal=-1, bool parkedRobot1, bool parkedRobot2}) {
-    if(wobblesDelivered !=-1 && wobblesDelivered <= 2)
-      _autoScore.wobblesDelivered = wobblesDelivered;
-    if(powershotsKnocked !=-1 && powershotsKnocked <=3)
-      _autoScore.powershotsKnocked = powershotsKnocked;
-    if(lowGoal !=-1)
-      _autoScore.lowGoal = lowGoal;
-    if(midGoal !=-1)
-      _autoScore.midGoal = midGoal;
-    if(highGoal !=-1)
-      _autoScore.highGoal = highGoal;
-    if(parkedRobot1 != null)
-      _autoScore.parkedRobot1 = parkedRobot1;
-    if(parkedRobot2 != null)
-      _autoScore.parkedRobot2 = parkedRobot2;
+  void updateAutonomous({
+    bool? duckDelivered,
+    Parking? storageUnitParking1,
+    Parking? storageUnitParking2,
+    Parking? warehouseParking1,
+    Parking? warehouseParking2,
+    int? storageUnitFreight,
+    int? shippingHubFreight,
+    bool? duckBonus1,
+    bool? duckBonus2,
+    bool? shippingElementBonus1,
+    bool? shippingElementBonus2
+  }) {
+    _autoScore.duckDelivered = duckDelivered ?? _autoScore.duckDelivered;
+    _autoScore.storageUnitParking1 = storageUnitParking1 ?? _autoScore.storageUnitParking1;
+    _autoScore.storageUnitParking2 = storageUnitParking2 ?? _autoScore.storageUnitParking2;
+    _autoScore.warehouseParking1 = warehouseParking1 ?? _autoScore.warehouseParking1;
+    _autoScore.warehouseParking2 = warehouseParking2 ?? _autoScore.warehouseParking2;
+    _autoScore.storageUnitFreight = (storageUnitFreight != null && storageUnitFreight > -1)
+        ? storageUnitFreight
+        :_autoScore.storageUnitFreight;
+    _autoScore.shippingHubFreight = (shippingHubFreight != null && shippingHubFreight > -1)
+        ? shippingHubFreight
+        : _autoScore.shippingHubFreight;
+    _autoScore.duckBonus1 = duckBonus1 ?? _autoScore.duckBonus1;
+    _autoScore.duckBonus2 = duckBonus2 ?? _autoScore.duckBonus2;
+    _autoScore.shippingElementBonus1 = shippingElementBonus1 ?? _autoScore.shippingElementBonus1;
+    _autoScore.shippingElementBonus2 = shippingElementBonus2 ?? _autoScore.shippingElementBonus2;
+
     notifyListeners();
   }
 
-  void updateTeleop({int lowGoal=-1, int midGoal=-1, int highGoal=-1}) {
-    if(lowGoal !=-1)
-      _teleopScore.lowGoal = lowGoal;
-    if(midGoal !=-1)
-      _teleopScore.midGoal = midGoal;
-    if(highGoal !=-1)
-      _teleopScore.highGoal = highGoal;
+  void updateTeleop({
+    int? storageUnitFreight,
+    int? level1Freight,
+    int? level2Freight,
+    int? level3Freight,
+    int? sharedFreight
+  }) {
+    _teleopScore.storageUnitFreight = (storageUnitFreight != null && storageUnitFreight > -1)
+        ? storageUnitFreight
+        :_teleopScore.storageUnitFreight;
+    _teleopScore.level1Freight = (level1Freight != null && level1Freight > -1)
+        ? level1Freight
+        :_teleopScore.level1Freight;
+    _teleopScore.level2Freight = (level2Freight != null && level2Freight > -1)
+        ? level2Freight
+        :_teleopScore.level2Freight;
+    _teleopScore.level3Freight = (level3Freight != null && level3Freight > -1)
+        ? level3Freight
+        :_teleopScore.level3Freight;
+    _teleopScore.sharedFreight = (sharedFreight != null && sharedFreight > -1)
+        ? sharedFreight
+        :_teleopScore.sharedFreight;
+
     notifyListeners();
   }
 
-  void updateEndgame({int powershotsKnocked=-1, int wobblesReturned=-1, int wobblesDropped=-1, int ringsOnWobble=-1}) {
-    if(powershotsKnocked !=-1)
-      _endgameScore.powershotsKnocked = powershotsKnocked;
-    if(wobblesReturned !=-1)
-      _endgameScore.wobblesReturned = wobblesReturned;
-    if(wobblesDropped !=-1)
-      _endgameScore.wobblesDropped = wobblesDropped;
-    if(ringsOnWobble !=-1)
-      _endgameScore.ringsOnWobble = ringsOnWobble;
+  void updateEndgame({
+    int? ducksDelivered,
+    bool? shippingHubBalanced,
+    bool? sharedHubUnbalanced,
+    Parking? warehouseParking1,
+    Parking? warehouseParking2,
+    bool? capping1,
+    bool? capping2
+  }) {
+    _endgameScore.ducksDelivered = (ducksDelivered != null && ducksDelivered > -1)
+        ? ducksDelivered
+        :_endgameScore.ducksDelivered;
+    _endgameScore.shippingHubBalanced = shippingHubBalanced ?? _endgameScore.shippingHubBalanced;
+    _endgameScore.sharedHubUnbalanced = sharedHubUnbalanced ?? _endgameScore.sharedHubUnbalanced;
+    _endgameScore.warehouseParking1 = warehouseParking1 ?? _endgameScore.warehouseParking1;
+    _endgameScore.warehouseParking2 = warehouseParking2 ?? _endgameScore.warehouseParking2;
+    _endgameScore.capping1 = capping1 ?? _endgameScore.capping1;
+    _endgameScore.capping2 = capping2 ?? _endgameScore.capping2;
+
     notifyListeners();
   }
 
   void resetScore () {
-    _autoScore = Autonomous(highGoal: 0, lowGoal: 0, midGoal: 0, parkedRobot1: false, parkedRobot2: false, powershotsKnocked: 0, wobblesDelivered: 0);
-    _teleopScore = Teleop(highGoal: 0, midGoal: 0, lowGoal: 0);
-    _endgameScore = EndGame(powershotsKnocked: 0, ringsOnWobble: 0, wobblesDropped: 0, wobblesReturned: 0);
+    _autoScore = Autonomous(
+        duckDelivered: false,
+        storageUnitParking1: Parking.NOT_PARKED,
+        storageUnitParking2: Parking.NOT_PARKED,
+        warehouseParking1: Parking.NOT_PARKED,
+        warehouseParking2: Parking.NOT_PARKED,
+        storageUnitFreight: 0,
+        shippingHubFreight: 0,
+        duckBonus1: false,
+        duckBonus2: false,
+        shippingElementBonus1: false,
+        shippingElementBonus2: false
+    );
+    _teleopScore = Teleop(
+        storageUnitFreight: 0,
+        level1Freight: 0,
+        level2Freight: 0,
+        level3Freight: 0,
+        sharedFreight: 0
+    );
+    _endgameScore = EndGame(
+        ducksDelivered: 0,
+        shippingHubBalanced: false,
+        sharedHubUnbalanced: false,
+        warehouseParking1: Parking.NOT_PARKED,
+        warehouseParking2: Parking.NOT_PARKED,
+        capping1: false,
+        capping2: false
+    );
+
     notifyListeners();
   }
 }

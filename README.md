@@ -1,6 +1,6 @@
-# Ultimate Goal Scorer
+# Freight Frenzy Scorer
 
-A scorer app for FTC 2020-2021
+A scorer app for FTC 2021-2022
 
 ## About
 
