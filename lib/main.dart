@@ -27,24 +27,29 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
+        title: 'FF Scorer',
         theme: ThemeData(
-            primaryColor: Colors.blue.withBlue(147).withRed(29).withGreen(66),
-            //primarySwatch: Colors.blue,
-            accentColor: Colors.green,
-            errorColor: Colors.red,
-            fontFamily: 'QuickSand',
+          primaryColor: Colors.blue.withBlue(147).withRed(29).withGreen(66),
+          //primarySwatch: Colors.blue,
+          accentColor: Colors.green,
+          errorColor: Colors.red,
+          fontFamily: 'QuickSand',
+          textTheme: ThemeData.light().textTheme.copyWith(
+            headline6: TextStyle(
+              fontFamily: 'OpenSans',
+              fontSize: 18,
+            )
+          ),
+          appBarTheme: AppBarTheme(
+            brightness: Brightness.dark,
             textTheme: ThemeData.light().textTheme.copyWith(
-                    headline6: TextStyle(
-                  fontFamily: 'OpenSans',
-                  fontSize: 18,
-                )),
-            appBarTheme: AppBarTheme(
-                textTheme: ThemeData.light().textTheme.copyWith(
-                        headline6: TextStyle(
-                      fontFamily: 'OpenSans',
-                      fontSize: 20,
-                    )))),
+              headline6: TextStyle(
+                fontFamily: 'OpenSans',
+                fontSize: 20,
+              )
+            )
+          )
+        ),
         // darkTheme: ThemeData.dark(),
         home: ScorerScreen(),
         routes: {

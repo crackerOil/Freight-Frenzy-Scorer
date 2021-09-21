@@ -116,7 +116,7 @@ class _EndGameCardState extends State<EndGameCard> {
               // ][scores.autoDetails.warehouseParking1.index]),
               Spacer(),
               Container(
-                padding: EdgeInsets.only(right: 12),
+                padding: EdgeInsets.only(right: 6),
                 child: Slider(
                   activeColor: Colors.red,
                   value: 1.0 * scores.endgameDetails.warehouseParking1.index,
@@ -148,7 +148,7 @@ class _EndGameCardState extends State<EndGameCard> {
                 // ][scores.autoDetails.warehouseParking2.index]),
                 Spacer(),
                 Container(
-                  padding: EdgeInsets.only(right: 12),
+                  padding: EdgeInsets.only(right: 6),
                   child: Slider(
                     activeColor: Colors.red,
                     value: 1.0 * scores.endgameDetails.warehouseParking2.index,

@@ -59,7 +59,7 @@ class _AutonomyCardState extends State<AutonomyCard> {
               // ][scores.autoDetails.storageUnitParking1.index]),
               Spacer(),
               Container(
-                padding: EdgeInsets.only(right: 12),
+                padding: EdgeInsets.only(right: 6),
                 child: Slider(
                   activeColor: Colors.green,
                   value: 1.0 * scores.autoDetails.storageUnitParking1.index,
@@ -91,7 +91,7 @@ class _AutonomyCardState extends State<AutonomyCard> {
               // ][scores.autoDetails.storageUnitParking2.index]),
               Spacer(),
               Container(
-                padding: EdgeInsets.only(right: 12),
+                padding: EdgeInsets.only(right: 6),
                 child: Slider(
                   activeColor: Colors.green,
                   value: 1.0 * scores.autoDetails.storageUnitParking2.index,
@@ -123,7 +123,7 @@ class _AutonomyCardState extends State<AutonomyCard> {
               // ][scores.autoDetails.warehouseParking1.index]),
               Spacer(),
               Container(
-                padding: EdgeInsets.only(right: 12),
+                padding: EdgeInsets.only(right: 6),
                 child: Slider(
                   activeColor: Colors.green,
                   value: 1.0 * scores.autoDetails.warehouseParking1.index,
@@ -155,7 +155,7 @@ class _AutonomyCardState extends State<AutonomyCard> {
               // ][scores.autoDetails.warehouseParking2.index]),
               Spacer(),
               Container(
-                padding: EdgeInsets.only(right: 12),
+                padding: EdgeInsets.only(right: 6),
                 child: Slider(
                   activeColor: Colors.green,
                   value: 1.0 * scores.autoDetails.warehouseParking2.index,
